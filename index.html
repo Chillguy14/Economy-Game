@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f6f3">
+  <title>Month by Month — a money game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f2f6f3;
+      --white: #fff;
+      --ink: #162a24;
+      --muted: #64766f;
+      --line: #d8e2dc;
+      --green: #18624b;
+      --green-soft: #e1f0e7;
+      --blue: #dcebf3;
+      --blue-ink: #315c70;
+      --coral: #d45a43;
+      --coral-soft: #f8e5df;
+      --yellow: #f3cc61;
+      --radius: 8px;
+      --sans: "DM Sans", "Segoe UI", sans-serif;
+      --serif: "Fraunces", Georgia, serif;
+      --mono: "DM Mono", monospace;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .shell { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; }
+    .brand-mark {
+      width: 32px; height: 32px; display: grid; place-items: center;
+      background: var(--green); color: white; border-radius: 50%;
+      font-family: var(--serif); font-size: 20px;
+    }
+    .brand-name { font-size: 14px; letter-spacing: 0; }
+    .top-note, .eyebrow, .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: 0; }
+    .top-note { color: var(--muted); font-size: 11px; }
+    main { padding: 38px 0 70px; }
+    .intro { display: flex; justify-content: space-between; gap: 40px; align-items: end; margin-bottom: 30px; }
+    .eyebrow { margin: 0 0 10px; color: var(--green); font-size: 11px; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 8px; font: 500 clamp(34px, 4vw, 48px)/1.05 var(--serif); letter-spacing: 0; }
+    .intro-copy { max-width: 570px; margin: 0; color: var(--muted); font-size: 15px; }
+    .step-pill { flex: 0 0 auto; padding: 8px 11px; border: 1px solid var(--line); border-radius: 99px; color: var(--muted); font: 11px var(--mono); }
+    .setup-grid { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(290px, .8fr); gap: 28px; align-items: start; }
+    .form-section { padding: 25px 0 26px; border-top: 1px solid var(--line); }
+    .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 15px; }
+    .section-heading h2 { margin: 0; font-size: 17px; line-height: 1.3; }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+    .choice-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
+    .choice {
+      display: block; position: relative; min-height: 144px; padding: 14px 13px 13px;
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--white);
+      cursor: pointer; transition: border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .choice:hover { transform: translateY(-2px); border-color: #8da99b; }
+    .choice:has(input:checked) { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); background: #f7fbf8; }
+    .choice input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .choice input:focus-visible + .choice-content { outline: 2px solid var(--coral); outline-offset: 3px; }
+    .choice-content { display: flex; height: 100%; flex-direction: column; }
+    .choice-tag { color: var(--muted); font: 10px var(--mono); text-transform: uppercase; }
+    .choice strong { display: block; margin: 8px 0 4px; font-size: 14px; line-height: 1.25; }
+    .choice small { color: var(--muted); font-size: 11px; line-height: 1.35; }
+    .choice-price { margin-top: auto; padding-top: 13px; font: 500 14px var(--mono); }
+    .choice-price span { color: var(--muted); font: 10px var(--sans); }
+    .compact-choices .choice { min-height: 120px; }
+    .money-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .field label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 12px; }
+    .input-wrap { position: relative; }
+    .input-wrap span { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-family: var(--mono); }
+    .field input {
+      width: 100%; height: 45px; padding: 0 13px 0 28px; border: 1px solid var(--line);
+      border-radius: 6px; outline: none; background: white; color: var(--ink); font-family: var(--mono);
+    }
+    .field input:focus { border-color: var(--green); box-shadow: 0 0 0 2px #18624b20; }
+    .field-note { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .plan-aside { position: sticky; top: 20px; }
+    .aside-art { position: relative; height: 155px; overflow: hidden; padding: 17px; border-radius: var(--radius); background: var(--blue); }
+    .aside-art p { position: relative; z-index: 1; max-width: 180px; margin: 0; color: var(--blue-ink); font: 500 22px/1.15 var(--serif); }
+    .city-art { position: absolute; width: 176px; height: 134px; right: 2px; bottom: -5px; }
+    .budget-sheet { padding: 20px 0 0; }
+    .budget-sheet h2 { margin: 0 0 14px; font-size: 15px; }
+    .budget-line { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+    .budget-line span:first-child { color: var(--muted); }
+    .budget-line span:last-child { font-family: var(--mono); }
+    .budget-line.income span:last-child { color: var(--green); }
+    .budget-total { display: flex; justify-content: space-between; align-items: baseline; padding: 15px 0 7px; font-weight: 700; }
+    .budget-total strong { font: 500 22px var(--serif); }
+    .budget-foot { color: var(--muted); font-size: 11px; }
+    .primary, .secondary {
+      min-height: 46px; padding: 0 17px; border: 0; border-radius: 6px;
+      font-weight: 700; transition: background .15s ease, transform .15s ease;
+    }
+    .primary { width: 100%; margin-top: 18px; background: var(--green); color: white; }
+    .primary:hover { background: #104d3a; transform: translateY(-1px); }
+    .secondary { background: white; border: 1px solid var(--line); color: var(--ink); }
+    .secondary:hover { border-color: var(--green); }
+    .game-view[hidden], .setup-view[hidden] { display: none; }
+    .game-header { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 24px; }
+    .game-header h1 { margin-bottom: 0; }
+    .game-actions { display: flex; gap: 8px; }
+    .game-top-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, .75fr); gap: 28px; }
+    .event-panel { position: relative; min-height: 224px; padding: 25px 28px; overflow: hidden; background: var(--green); color: white; border-radius: var(--radius); }
+    .event-panel::after { content: ""; position: absolute; width: 190px; height: 190px; right: 33px; top: 20px; border: 1px solid #ffffff38; border-radius: 50%; box-shadow: 0 0 0 22px #ffffff0c, 0 0 0 44px #ffffff0c; }
+    .event-panel .eyebrow { color: #c2dfcf; }
+    .event-panel h2 { position: relative; z-index: 1; max-width: 470px; margin: 24px 0 8px; font: 500 30px/1.1 var(--serif); }
+    .event-panel p { position: relative; z-index: 1; max-width: 430px; margin: 0; color: #d5e8dd; font-size: 13px; }
+    .event-value { position: absolute; z-index: 1; right: 26px; bottom: 22px; font: 500 19px var(--mono); }
+    .event-value.negative { color: #ffd1c5; }
+    .event-value.positive { color: #c7f0bd; }
+    .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .stat { min-height: 111px; padding: 16px; background: white; }
+    .stat-label { color: var(--muted); font: 10px var(--mono); text-transform: uppercase; }
+    .stat-value { margin-top: 12px; font: 500 24px var(--serif); }
+    .stat-sub { color: var(--muted); font-size: 11px; }
+    .game-bottom-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 28px; margin-top: 28px; }
+    .plain-section { padding-top: 22px; border-top: 1px solid var(--line); }
+    .plain-section h2 { margin: 0 0 14px; font-size: 16px; }
+    .cashflow-row { display: grid; grid-template-columns: 115px 1fr 72px; align-items: center; gap: 12px; padding: 9px 0; font-size: 12px; }
+    .cashflow-label { color: var(--muted); }
+    .bar-track { height: 7px; overflow: hidden; border-radius: 99px; background: #e2e9e5; }
+    .bar { height: 100%; border-radius: inherit; background: var(--green); }
+    .bar.expense { background: var(--coral); }
+    .cashflow-value { text-align: right; font: 11px var(--mono); }
+    .month-list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 7px; }
+    .month-cell { min-height: 66px; padding: 9px; border: 1px solid var(--line); border-radius: 6px; background: #ffffff80; }
+    .month-cell.active { border-color: var(--green); background: var(--green-soft); }
+    .month-cell.done { border-color: transparent; background: var(--green); color: white; }
+    .month-cell.done.negative-month { background: var(--coral); }
+    .month-cell span { display: block; color: var(--muted); font: 9px var(--mono); text-transform: uppercase; }
+    .month-cell.done span { color: #d6e9df; }
+    .month-cell strong { display: block; margin-top: 6px; font: 11px var(--mono); }
+    .advance-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 20px; }
+    .advance-row p { margin: 0; color: var(--muted); font-size: 11px; }
+    .advance-row .primary { width: auto; min-width: 190px; margin: 0; }
+    .result-panel { padding: 27px; border-radius: var(--radius); background: var(--blue); }
+    .result-panel h2 { margin: 0 0 8px; font: 500 29px var(--serif); }
+    .result-panel p { color: var(--blue-ink); font-size: 13px; }
+    .result-numbers { display: flex; gap: 30px; margin: 23px 0; }
+    .result-number span { display: block; color: var(--blue-ink); font: 10px var(--mono); text-transform: uppercase; }
+    .result-number strong { display: block; margin-top: 5px; font: 500 24px var(--serif); }
+    .result-panel .primary { margin-top: 0; }
+    .empty-note { color: var(--muted); font-size: 12px; }
+    footer { padding: 18px 0 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    @media (max-width: 850px) {
+      .setup-grid, .game-top-grid, .game-bottom-grid { grid-template-columns: 1fr; }
+      .plan-aside { position: static; }
+      .choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .aside-art { height: 132px; }
+      .game-header { align-items: start; }
+    }
+    @media (max-width: 540px) {
+      .shell { width: min(100% - 28px, 1180px); }
+      main { padding-top: 26px; }
+      .intro { display: block; }
+      .step-pill { display: inline-block; margin-top: 17px; }
+      .top-note { font-size: 9px; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 4px; }
+      .choice { min-height: 137px; padding: 12px 10px; }
+      .choice strong { font-size: 13px; }
+      .game-header { display: block; }
+      .game-actions { margin-top: 14px; }
+      .event-panel { min-height: 245px; padding: 20px; }
+      .event-panel h2 { margin-top: 30px; font-size: 27px; }
+      .event-value { right: 20px; bottom: 17px; }
+      .cashflow-row { grid-template-columns: 94px 1fr 61px; gap: 8px; }
+      .month-list { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .advance-row { align-items: stretch; flex-direction: column; }
+      .advance-row .primary { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar shell">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">M</span><span class="brand-name">MONTH BY MONTH</span></div>
+    <div class="top-note">A small game about the big decisions</div>
+  </header>
+
+  <main class="shell">
+    <section id="setupView" class="setup-view" aria-labelledby="setupTitle">
+      <div class="intro">
+        <div>
+          <p class="eyebrow">Your next twelve months</p>
+          <h1 id="setupTitle">Build a life you can afford.</h1>
+          <p class="intro-copy">Choose the commitments that shape your month. Then see how your plan holds up when real life adds a few surprises.</p>
+        </div>
+        <span class="step-pill">01 / MAKE YOUR PLAN</span>
+      </div>
+
+      <div class="setup-grid">
+        <form id="planForm">
+          <section class="form-section" aria-labelledby="homeHeading">
+            <div class="section-heading"><h2 id="homeHeading">Where will you live?</h2><p>Choose a place to call home.</p></div>
+            <div class="choice-grid" id="housingChoices">
+              <label class="choice">
+                <input type="radio" name="housing" value="lodger" checked>
+                <span class="choice-content"><span class="choice-tag">City · Shared</span><strong>Rent a room</strong><small>Lower rent, shared spaces.</small><span class="choice-price">$850 <span>/ month</span></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="housing" value="outsideApartment">
+                <span class="choice-content"><span class="choice-tag">Outside · Solo</span><strong>Small apartment</strong><small>Your own place, further out.</small><span class="choice-price">$1,240 <span>/ month</span></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="housing" value="cityApartment">
+                <span class="choice-content"><span class="choice-tag">City · Solo</span><strong>City apartment</strong><small>Close to work and everything.</small><span class="choice-price">$1,690 <span>/ month</span></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="housing" value="house">
+                <span class="choice-content"><span class="choice-tag">Outside · More room</span><strong>Rent a house</strong><small>Room to spread out, higher bills.</small><span class="choice-price">$2,150 <span>/ month</span></span></span>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="travelHeading">
+            <div class="section-heading"><h2 id="travelHeading">How will you get around?</h2><p>Monthly cost, all in.</p></div>
+            <div class="choice-grid compact-choices">
+              <label class="choice">
+                <input type="radio" name="transport" value="bike">
+                <span class="choice-content"><span class="choice-tag">Bike + walking</span><strong>Keep it simple</strong><small>Active, weather-dependent.</small><span class="choice-price">$85 <span>/ month</span></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="transport" value="transit" checked>
+                <span class="choice-content"><span class="choice-tag">Bus + train</span><strong>Public transit</strong><small>Reliable, no parking costs.</small><span class="choice-price">$145 <span>/ month</span></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="transport" value="car">
+                <span class="choice-content"><span class="choice-tag">Own a car</span><strong>Used car</strong><small>Fuel, insurance, upkeep.</small><span class="choice-price">$465 <span>/ month</span></span></span>
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section" aria-labelledby="moneyHeading">
+            <div class="section-heading"><h2 id="moneyHeading">What does your month look like?</h2><p>After-tax income and regular commitments.</p></div>
+            <div class="money-row">
+              <div class="field"><label for="income">Take-home pay / month</label><div class="input-wrap"><span>$</span><input id="income" name="income" type="number" min="800" max="20000" step="50" value="3900" required></div><small class="field-note">What lands in your account.</small></div>
+              <div class="field"><label for="startingCash">Money in the bank today</label><div class="input-wrap"><span>$</span><input id="startingCash" name="startingCash" type="number" min="0" max="1000000" step="100" value="1800" required></div><small class="field-note">Your starting cushion.</small></div>
+              <div class="field"><label for="food">Food & household</label><div class="input-wrap"><span>$</span><input id="food" name="food" type="number" min="0" max="5000" step="10" value="420" required></div></div>
+              <div class="field"><label for="utilities">Utilities & internet</label><div class="input-wrap"><span>$</span><input id="utilities" name="utilities" type="number" min="0" max="3000" step="10" value="160" required></div></div>
+              <div class="field"><label for="health">Health & insurance</label><div class="input-wrap"><span>$</span><input id="health" name="health" type="number" min="0" max="3000" step="10" value="125" required></div></div>
+              <div class="field"><label for="phone">Phone & subscriptions</label><div class="input-wrap"><span>$</span><input id="phone" name="phone" type="number" min="0" max="2000" step="5" value="120" required></div></div>
+              <div class="field"><label for="debt">Debt payments</label><div class="input-wrap"><span>$</span><input id="debt" name="debt" type="number" min="0" max="10000" step="10" value="0" required></div></div>
+              <div class="field"><label for="saving">Monthly savings goal</label><div class="input-wrap"><span>$</span><input id="saving" name="saving" type="number" min="0" max="10000" step="25" value="300" required></div></div>
+            </div>
+          </section>
+        </form>
+
+        <aside class="plan-aside" aria-label="Monthly budget preview">
+          <div class="aside-art">
+            <p>A little room to breathe.</p>
+            <svg class="city-art" viewBox="0 0 190 145" role="img" aria-label="Illustration of homes and city buildings">
+              <path d="M11 138V78h37v60M56 138V48h42v90M106 138V68h30v70M144 138V31h35v107" fill="#f4faf6" stroke="#315c70" stroke-width="2"/>
+              <path d="M18 90h8v10h-8zm17 0h8v10h-8zm29-28h10v12H64zm18 0h10v12H82zm-18 24h10v12H64zm18 0h10v12H82zm34-5h8v10h-8zm0 19h8v10h-8zm18-48h9v12h-9zm17 0h9v12h-9zm-17 21h9v12h-9zm17 0h9v12h-9z" fill="#98c7b0"/>
+              <path d="M0 138h190" stroke="#315c70" stroke-width="2"/><path d="m48 78 27-22 25 22" fill="none" stroke="#d45a43" stroke-width="3"/>
+              <path d="M32 138v-21h15v21" fill="#f3cc61" stroke="#315c70" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="budget-sheet">
+            <h2>Your monthly snapshot</h2>
+            <div id="budgetBreakdown"></div>
+            <div class="budget-total"><span>Left after your plan</span><strong id="leftover">$0</strong></div>
+            <p class="budget-foot">After bills and your savings goal. One-time move-in deposit is taken from your starting cash.</p>
+            <button class="primary" id="beginButton" type="submit" form="planForm">Start the year <span aria-hidden="true">→</span></button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="gameView" class="game-view" hidden aria-labelledby="gameTitle" aria-live="polite"></section>
+  </main>
+  <footer class="shell">A game, not financial advice. All amounts are fictional.</footer>
+
+  <script>
+    (() => {
+      const housing = {
+        lodger: { name: "Rent a room", cost: 850, deposit: 425 },
+        outsideApartment: { name: "Small apartment", cost: 1240, deposit: 620 },
+        cityApartment: { name: "City apartment", cost: 1690, deposit: 845 },
+        house: { name: "Rent a house", cost: 2150, deposit: 1075 }
+      };
+      const transport = {
+        bike: { name: "Bike + walking", cost: 85 },
+        transit: { name: "Public transit", cost: 145 },
+        car: { name: "Used car", cost: 465 }
+      };
+      const events = [
+        { title: "A dental surprise", text: "A filling and a checkup weren't in the plan.", amount: -260 },
+        { title: "Extra shifts came through", text: "A busy month at work adds a little to your pay.", amount: 240 },
+        { title: "The laptop gives out", text: "You need a repair to keep work moving.", amount: -340 },
+        { title: "A tax refund arrives", text: "A refund lands in your account, right on time.", amount: 420 },
+        { title: "A friend gets married", text: "Travel and a gift make for a lovely, spendy weekend.", amount: -190 },
+        { title: "Your utility bill jumps", text: "A colder month pushes the bills above average.", amount: -145 },
+        { title: "A small freelance job", text: "A one-off project brings in a useful extra.", amount: 310 },
+        { title: "You need new tires", text: "The car needs attention sooner than expected.", amount: -380 },
+        { title: "A family celebration", text: "You pitch in for a milestone worth celebrating.", amount: -160 },
+        { title: "A work expense is reimbursed", text: "A delayed reimbursement finally clears.", amount: 175 },
+        { title: "The washing machine breaks", text: "A repair keeps laundry day from becoming a bigger problem.", amount: -230 },
+        { title: "A quiet month", text: "Nothing major comes up. That counts for something.", amount: 0 }
+      ];
+      const form = document.getElementById("planForm");
+      const setupView = document.getElementById("setupView");
+      const gameView = document.getElementById("gameView");
+      const numberFields = [...form.querySelectorAll('input[type="number"]')];
+      let state = null;
+
+      const money = value => `${value < 0 ? "−" : ""}$${Math.abs(Math.round(value)).toLocaleString("en-US")}`;
+      const fieldValue = name => Math.max(0, Number(form.elements[name].value) || 0);
+      const selected = name => form.querySelector(`input[name="${name}"]:checked`).value;
+      const readPlan = () => ({
+        home: selected("housing"), ride: selected("transport"),
+        income: fieldValue("income"), startingCash: fieldValue("startingCash"),
+        food: fieldValue("food"), utilities: fieldValue("utilities"), health: fieldValue("health"),
+        phone: fieldValue("phone"), debt: fieldValue("debt"), saving: fieldValue("saving")
+      });
+      const monthlyCosts = plan => ({
+        "Housing": housing[plan.home].cost,
+        "Getting around": transport[plan.ride].cost,
+        "Food & household": plan.food,
+        "Utilities & internet": plan.utilities,
+        "Health & insurance": plan.health,
+        "Phone & subscriptions": plan.phone,
+        "Debt payments": plan.debt,
+        "Savings goal": plan.saving
+      });
+      const totalCosts = plan => Object.values(monthlyCosts(plan)).reduce((sum, value) => sum + value, 0);
+
+      function updatePreview() {
+        const plan = readPlan();
+        const lines = [
+          ["Take-home pay", plan.income, "income"],
+          ["Housing", housing[plan.home].cost],
+          ["Transport", transport[plan.ride].cost],
+          ["Everything else + savings", plan.food + plan.utilities + plan.health + plan.phone + plan.debt + plan.saving]
+        ];
+        document.getElementById("budgetBreakdown").innerHTML = lines.map(([label, amount, kind]) =>
+          `<div class="budget-line ${kind || ""}"><span>${label}</span><span>${money(kind ? amount : -amount)}</span></div>`
+        ).join("");
+        const leftover = plan.income - totalCosts(plan);
+        const leftoverEl = document.getElementById("leftover");
+        leftoverEl.textContent = money(leftover);
+        leftoverEl.style.color = leftover < 0 ? "var(--coral)" : "var(--green)";
+        document.getElementById("beginButton").textContent = state ? `Save plan for month ${state.month + 1} →` : "Start the year →";
+      }
+
+      function shuffle(items) {
+        const result = [...items];
+        for (let index = result.length - 1; index > 0; index--) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [result[index], result[swapIndex]] = [result[swapIndex], result[index]];
+        }
+        return result;
+      }
+
+      function renderGame() {
+        const isFinished = state.month >= 12;
+        const currentEvent = state.events[state.month];
+        const costs = monthlyCosts(state.plan);
+        const fixedOutgoings = totalCosts(state.plan);
+        const amountAfterMonth = state.cash + state.plan.income - fixedOutgoings + (currentEvent?.amount || 0);
+        const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date(2026, state.month, 1));
+        const history = Array.from({ length: 12 }, (_, index) => {
+          const record = state.history[index];
+          return `<div class="month-cell ${record ? `done ${record.net < 0 ? "negative-month" : ""}` : index === state.month && !isFinished ? "active" : ""}"><span>${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(2026, index, 1))}</span><strong>${record ? money(record.cash) : index === state.month && !isFinished ? "NOW" : "···"}</strong></div>`;
+        }).join("");
+
+        if (isFinished) {
+          const survived = state.cash >= 0;
+          gameView.innerHTML = `
+            <div class="game-header"><div><p class="eyebrow">Year complete · 12 months</p><h1 id="gameTitle">${survived ? "You made it through." : "A tough year, honestly."}</h1></div><button class="secondary" id="editPlan">Edit your plan</button></div>
+            <div class="result-panel"><h2>${survived ? "Your plan held." : "Your plan ran short."}</h2><p>${survived ? "You kept your balance above zero. Take a look at what your choices added up to." : "Some months cost more than your plan could absorb. Try a different mix of commitments and see what changes."}</p><div class="result-numbers"><div class="result-number"><span>Cash on hand</span><strong>${money(state.cash)}</strong></div><div class="result-number"><span>Saved this year</span><strong>${money(state.saved)}</strong></div></div><button class="primary" id="newGame">Make a new plan</button></div>
+            <section class="plain-section"><h2>Your year</h2><div class="month-list">${history}</div></section>`;
+        } else {
+          gameView.innerHTML = `
+            <div class="game-header"><div><p class="eyebrow">Your next twelve months · Month ${state.month + 1} of 12</p><h1 id="gameTitle">${monthName} is here.</h1></div><div class="game-actions"><button class="secondary" id="editPlan">Edit plan</button></div></div>
+            <div class="game-top-grid">
+              <article class="event-panel"><p class="eyebrow">This month's surprise</p><h2>${currentEvent.title}</h2><p>${currentEvent.text}</p><span class="event-value ${currentEvent.amount < 0 ? "negative" : "positive"}">${currentEvent.amount > 0 ? "+" : ""}${money(currentEvent.amount)}</span></article>
+              <div class="stats">
+                <div class="stat"><div class="stat-label">Cash right now</div><div class="stat-value">${money(state.cash)}</div><div class="stat-sub">After your move-in deposit</div></div>
+                <div class="stat"><div class="stat-label">Monthly income</div><div class="stat-value">${money(state.plan.income)}</div><div class="stat-sub">Take-home pay</div></div>
+                <div class="stat"><div class="stat-label">Monthly commitments</div><div class="stat-value">${money(fixedOutgoings)}</div><div class="stat-sub">Including your savings goal</div></div>
+                <div class="stat"><div class="stat-label">After this month</div><div class="stat-value" style="color:${amountAfterMonth < 0 ? "var(--coral)" : "var(--green)"}">${money(amountAfterMonth)}</div><div class="stat-sub">If you close out the month</div></div>
+              </div>
+            </div>
+            <div class="game-bottom-grid">
+              <section class="plain-section"><h2>Where your paycheck goes</h2><div>${Object.entries(costs).map(([label, amount]) => `<div class="cashflow-row"><span class="cashflow-label">${label}</span><div class="bar-track"><div class="bar expense" style="width:${Math.min(100, Math.max(1, amount / Math.max(state.plan.income, 1) * 100))}%"></div></div><span class="cashflow-value">${money(-amount)}</span></div>`).join("")}<div class="cashflow-row"><span class="cashflow-label">Left before surprises</span><div class="bar-track"><div class="bar" style="width:${Math.min(100, Math.max(1, (state.plan.income - fixedOutgoings) / Math.max(state.plan.income, 1) * 100))}%"></div></div><span class="cashflow-value">${money(state.plan.income - fixedOutgoings)}</span></div></div></section>
+              <section class="plain-section"><h2>The year ahead</h2><div class="month-list">${history}</div><div class="advance-row"><p>Close out the month. Income, commitments, savings, and the surprise are applied.</p><button class="primary" id="advanceMonth">Close ${monthName} →</button></div></section>
+            </div>`;
+        }
+        document.getElementById("editPlan")?.addEventListener("click", () => {
+          setupView.hidden = false;
+          gameView.hidden = true;
+          document.getElementById("setupTitle").textContent = "Change your commitments.";
+          document.querySelector("#setupView .step-pill").textContent = `MONTH ${state.month + 1} / EDIT YOUR PLAN`;
+          updatePreview();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        document.getElementById("advanceMonth")?.addEventListener("click", () => {
+          const surprise = currentEvent.amount;
+          const net = state.plan.income - fixedOutgoings + surprise;
+          state.cash += net;
+          state.saved += state.plan.saving;
+          state.month += 1;
+          state.history.push({ cash: state.cash, net });
+          renderGame();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        document.getElementById("newGame")?.addEventListener("click", () => {
+          state = null;
+          setupView.hidden = false;
+          gameView.hidden = true;
+          document.getElementById("setupTitle").textContent = "Build a life you can afford.";
+          document.querySelector("#setupView .step-pill").textContent = "01 / MAKE YOUR PLAN";
+          updatePreview();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      numberFields.forEach(input => input.addEventListener("input", updatePreview));
+      form.querySelectorAll('input[type="radio"]').forEach(input => input.addEventListener("change", updatePreview));
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const plan = readPlan();
+        if (state) {
+          state.plan = plan;
+        } else {
+          state = {
+            plan,
+            cash: plan.startingCash - housing[plan.home].deposit,
+            saved: 0,
+            month: 0,
+            events: shuffle(events),
+            history: []
+          };
+        }
+        setupView.hidden = true;
+        gameView.hidden = false;
+        renderGame();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+      updatePreview();
+    })();
+  </script>
+</body>
+</html>
