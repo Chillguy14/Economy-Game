@@ -163,6 +163,34 @@
     .result-number strong { display: block; margin-top: 5px; font: 500 24px var(--serif); }
     .result-panel .primary { margin-top: 0; }
     .empty-note { color: var(--muted); font-size: 12px; }
+    .career-intro { max-width: 720px; margin-bottom: 22px; color: var(--muted); }
+    .job-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .job-card { padding: 19px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .job-card.locked { background: #ffffff80; }
+    .job-card-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+    .job-card h2 { margin: 5px 0; font-size: 18px; }
+    .job-tier { color: var(--green); font: 10px var(--mono); text-transform: uppercase; }
+    .job-pay { white-space: nowrap; font: 500 17px var(--mono); }
+    .job-card p { margin: 8px 0; color: var(--muted); font-size: 12px; }
+    .job-card .job-requirement { color: var(--blue-ink); }
+    .job-card .secondary, .job-card .primary { width: 100%; margin-top: 8px; }
+    button:disabled { cursor: not-allowed; opacity: .5; }
+    .job-lock { color: var(--coral); font-size: 11px; }
+    .interview-panel { max-width: 760px; padding: 25px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .interview-panel h2 { font: 500 27px var(--serif); }
+    .interview-question { margin: 22px 0 14px; font-size: 18px; font-weight: 700; }
+    .answer-list { display: grid; gap: 9px; }
+    .answer-button { padding: 13px 15px; border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); text-align: left; }
+    .answer-button:hover { border-color: var(--green); background: #f7fbf8; }
+    .interview-feedback { min-height: 28px; margin: 12px 0 0; color: var(--green); font-weight: 700; }
+    .interview-feedback.miss { color: var(--coral); }
+    .interview-actions { display: flex; gap: 9px; margin-top: 16px; }
+    @media (max-width: 540px) {
+      .job-grid { grid-template-columns: 1fr; }
+      .job-card-top { display: block; }
+      .job-pay { display: block; margin-top: 8px; }
+      .interview-actions { flex-direction: column; }
+    }
     footer { padding: 18px 0 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
     @media (max-width: 850px) {
       .setup-grid, .game-top-grid, .game-bottom-grid { grid-template-columns: 1fr; }
@@ -206,17 +234,17 @@
     <section id="setupView" class="setup-view" aria-labelledby="setupTitle">
       <div class="intro">
         <div>
-          <p class="eyebrow">Your next twelve months</p>
-          <h1 id="setupTitle">Build a life you can afford.</h1>
-          <p class="intro-copy">Choose the commitments that shape your month. Then see how your plan holds up when real life adds a few surprises.</p>
+          <p class="eyebrow">A money adventure</p>
+          <h1 id="setupTitle">Pick your starting lifestyle.</h1>
+          <p class="intro-copy">Choose a home and monthly expenses. Then step into a new world, find a job you qualify for, and see if your paycheck can support your choices.</p>
         </div>
-        <span class="step-pill">01 / MAKE YOUR PLAN</span>
+        <span class="step-pill">LEVEL 1 / BUILD YOUR PLAN</span>
       </div>
 
       <div class="setup-grid">
         <form id="planForm">
           <section class="form-section" aria-labelledby="homeHeading">
-            <div class="section-heading"><h2 id="homeHeading">Where will you live?</h2><p>Choose a place to call home.</p></div>
+            <div class="section-heading"><h2 id="homeHeading">Choose your home</h2><p>A bigger place costs more each month.</p></div>
             <div class="choice-grid" id="housingChoices">
               <label class="choice">
                 <input type="radio" name="housing" value="lodger" checked>
@@ -238,7 +266,7 @@
           </section>
 
           <section class="form-section" aria-labelledby="travelHeading">
-            <div class="section-heading"><h2 id="travelHeading">How will you get around?</h2><p>Monthly cost, all in.</p></div>
+            <div class="section-heading"><h2 id="travelHeading">Choose how you get around</h2><p>Monthly cost, all in.</p></div>
             <div class="choice-grid compact-choices">
               <label class="choice">
                 <input type="radio" name="transport" value="bike">
@@ -256,10 +284,9 @@
           </section>
 
           <section class="form-section" aria-labelledby="moneyHeading">
-            <div class="section-heading"><h2 id="moneyHeading">What does your month look like?</h2><p>After-tax income and regular commitments.</p></div>
+            <div class="section-heading"><h2 id="moneyHeading">Set your money goals</h2><p>How much cash do you start with, and what bills will you have?</p></div>
             <div class="money-row">
-              <div class="field"><label for="income">Take-home pay / month</label><div class="input-wrap"><span>$</span><input id="income" name="income" type="number" min="800" max="20000" step="50" value="3900" required></div><small class="field-note">What lands in your account.</small></div>
-              <div class="field"><label for="startingCash">Money in the bank today</label><div class="input-wrap"><span>$</span><input id="startingCash" name="startingCash" type="number" min="0" max="1000000" step="100" value="1800" required></div><small class="field-note">Your starting cushion.</small></div>
+              <div class="field"><label for="startingCash">Starting money</label><div class="input-wrap"><span>$</span><input id="startingCash" name="startingCash" type="number" min="0" max="1000000" step="100" value="12000" required></div><small class="field-note" id="startingCashNote">You will pay a home deposit. College costs extra.</small></div>
               <div class="field"><label for="food">Food & household</label><div class="input-wrap"><span>$</span><input id="food" name="food" type="number" min="0" max="5000" step="10" value="420" required></div></div>
               <div class="field"><label for="utilities">Utilities & internet</label><div class="input-wrap"><span>$</span><input id="utilities" name="utilities" type="number" min="0" max="3000" step="10" value="160" required></div></div>
               <div class="field"><label for="health">Health & insurance</label><div class="input-wrap"><span>$</span><input id="health" name="health" type="number" min="0" max="3000" step="10" value="125" required></div></div>
@@ -281,11 +308,11 @@
             </svg>
           </div>
           <div class="budget-sheet">
-            <h2>Your monthly snapshot</h2>
+            <h2>Your monthly costs</h2>
             <div id="budgetBreakdown"></div>
-            <div class="budget-total"><span>Left after your plan</span><strong id="leftover">$0</strong></div>
-            <p class="budget-foot">After bills and your savings goal. One-time move-in deposit is taken from your starting cash.</p>
-            <button class="primary" id="beginButton" type="submit" form="planForm">Start the year <span aria-hidden="true">→</span></button>
+            <div class="budget-total"><span>Job paycheck</span><strong>Find out next!</strong></div>
+            <p class="budget-foot">Your job must pay enough to cover these costs. The home deposit comes out of your starting money.</p>
+            <button class="primary" id="beginButton" type="submit" form="planForm">Enter the world <span aria-hidden="true">→</span></button>
           </div>
         </aside>
       </div>
@@ -293,7 +320,7 @@
 
     <section id="gameView" class="game-view" hidden aria-labelledby="gameTitle" aria-live="polite"></section>
   </main>
-  <footer class="shell">A game, not financial advice. All amounts are fictional.</footer>
+  <footer class="shell">A pretend money adventure for learning. All jobs, costs, and paychecks are fictional.</footer>
 
   <script>
     (() => {
@@ -308,6 +335,84 @@
         transit: { name: "Public transit", cost: 145 },
         car: { name: "Used car", cost: 465 }
       };
+      const jobs = [
+        {
+          id: "delivery", tier: "Level 1 · Starter job", title: "Pizza delivery driver", pay: 2400,
+          description: "Bring pizzas to customers. Plan your route and be on time.",
+          questions: [{
+            prompt: "A customer gives you the wrong address. What do you do?",
+            answers: ["Guess where they live.", "Leave the pizza outside.", "Call the customer politely and check the address."],
+            correct: 2
+          }]
+        },
+        {
+          id: "shop", tier: "Level 2 · Team player", title: "Grocery store worker", pay: 3300,
+          description: "Help customers, stock shelves, and work with a team.",
+          questions: [{
+            prompt: "A customer cannot find an item. What is a good first step?",
+            answers: ["Tell them to find it themselves.", "Listen, then help them look or ask a teammate.", "Ignore them and keep walking."],
+            correct: 1
+          }, {
+            prompt: "Your manager asks you to do a task you have not done before.",
+            answers: ["Pretend you already know.", "Walk away without saying anything.", "Ask how to do it safely, then give it a try."],
+            correct: 2
+          }]
+        },
+        {
+          id: "mechanic", tier: "Level 3 · Skilled work", title: "Bike mechanic", pay: 4600,
+          description: "Fix bikes, solve problems, and help people ride safely.",
+          education: { id: "trade", name: "Bike repair course", cost: 1200 },
+          questions: [{
+            prompt: "A bike still makes a noise after your repair. What do you do?",
+            answers: ["Blame the customer.", "Check your work again and ask for help if needed.", "Tell the customer it is fine without checking."],
+            correct: 1
+          }, {
+            prompt: "Why should you explain a repair before charging?",
+            answers: ["So you can use more confusing words.", "So the customer understands the work and cost.", "It does not matter what the customer thinks."],
+            correct: 1
+          }]
+        },
+        {
+          id: "developer", tier: "Level 4 · Tech expert", title: "Software developer", pay: 6800,
+          description: "Build and test computer programs with a project team.",
+          education: { id: "coding", name: "Coding college course", cost: 4000 },
+          questions: [{
+            prompt: "Your program has a bug you cannot find. What is a smart move?",
+            answers: ["Delete everything and hope it works.", "Break the problem into steps, test, and ask a teammate.", "Hide the bug from your team."],
+            correct: 1
+          }, {
+            prompt: "A teammate suggests a different idea. What should you do?",
+            answers: ["Refuse to hear them out.", "Take credit for their idea.", "Listen and compare the ideas using evidence."],
+            correct: 2
+          }, {
+            prompt: "How do you know if a new feature works?",
+            answers: ["Look at it once and assume it is perfect.", "Test it in different ways and fix problems you find.", "Ask someone to guess."],
+            correct: 1
+          }]
+        },
+        {
+          id: "nasa", tier: "Level 5 · Dream job", title: "NASA mission engineer", pay: 10200,
+          description: "Help design and test machines that explore space. This is the toughest interview!",
+          education: { id: "university", name: "University engineering degree", cost: 10000 },
+          questions: [{
+            prompt: "A spacecraft test does not match your prediction. What comes first?",
+            answers: ["Change the numbers so they look right.", "Ignore the result.", "Check the data and test setup before drawing conclusions."],
+            correct: 2
+          }, {
+            prompt: "A teammate finds a safety problem close to launch. What do you do?",
+            answers: ["Keep quiet so the schedule is not delayed.", "Speak up right away and help the team investigate.", "Ask them to erase the report."],
+            correct: 1
+          }, {
+            prompt: "How should engineers make a big decision?",
+            answers: ["Pick the fastest answer without checking.", "Choose whatever sounds exciting.", "Use careful tests, evidence, and teamwork."],
+            correct: 2
+          }, {
+            prompt: "Why does this job need years of study?",
+            answers: ["A degree means you never need to learn again.", "Space missions need deep science, math, and engineering skills.", "It is only to make the job sound fancy."],
+            correct: 1
+          }]
+        }
+      ];
       const events = [
         { title: "A dental surprise", text: "A filling and a checkup weren't in the plan.", amount: -260 },
         { title: "Extra shifts came through", text: "A busy month at work adds a little to your pay.", amount: 240 },
@@ -325,6 +430,8 @@
       const form = document.getElementById("planForm");
       const setupView = document.getElementById("setupView");
       const gameView = document.getElementById("gameView");
+      const startingCashField = document.getElementById("startingCash");
+      const startingCashNote = document.getElementById("startingCashNote");
       const numberFields = [...form.querySelectorAll('input[type="number"]')];
       let state = null;
 
@@ -333,7 +440,7 @@
       const selected = name => form.querySelector(`input[name="${name}"]:checked`).value;
       const readPlan = () => ({
         home: selected("housing"), ride: selected("transport"),
-        income: fieldValue("income"), startingCash: fieldValue("startingCash"),
+        startingCash: fieldValue("startingCash"),
         food: fieldValue("food"), utilities: fieldValue("utilities"), health: fieldValue("health"),
         phone: fieldValue("phone"), debt: fieldValue("debt"), saving: fieldValue("saving")
       });
@@ -352,19 +459,17 @@
       function updatePreview() {
         const plan = readPlan();
         const lines = [
-          ["Take-home pay", plan.income, "income"],
           ["Housing", housing[plan.home].cost],
-          ["Transport", transport[plan.ride].cost],
-          ["Everything else + savings", plan.food + plan.utilities + plan.health + plan.phone + plan.debt + plan.saving]
+          ["Getting around", transport[plan.ride].cost],
+          ["Food, bills, debt + savings", plan.food + plan.utilities + plan.health + plan.phone + plan.debt + plan.saving]
         ];
         document.getElementById("budgetBreakdown").innerHTML = lines.map(([label, amount, kind]) =>
           `<div class="budget-line ${kind || ""}"><span>${label}</span><span>${money(kind ? amount : -amount)}</span></div>`
         ).join("");
-        const leftover = plan.income - totalCosts(plan);
-        const leftoverEl = document.getElementById("leftover");
-        leftoverEl.textContent = money(leftover);
-        leftoverEl.style.color = leftover < 0 ? "var(--coral)" : "var(--green)";
-        document.getElementById("beginButton").textContent = state ? `Save plan for month ${state.month + 1} →` : "Start the year →";
+        document.getElementById("beginButton").textContent = state ? "Save plan & check jobs →" : "Enter the world →";
+        document.querySelector(".budget-total span").textContent = "Monthly costs";
+        document.querySelector(".budget-total strong").textContent = money(totalCosts(plan));
+        document.querySelector(".budget-total strong").style.color = "var(--ink)";
       }
 
       function shuffle(items) {
@@ -376,9 +481,124 @@
         return result;
       }
 
+      function jobForState() {
+        return jobs.find(job => job.id === state.jobId);
+      }
+
+      function canInterview(job) {
+        if (totalCosts(state.plan) > job.pay) return false;
+        if (job.education && !state.education.includes(job.education.id) && state.cash < job.education.cost) return false;
+        return true;
+      }
+
+      function renderJobs() {
+        const currentJob = jobForState();
+        const total = totalCosts(state.plan);
+        const jobCards = jobs.map(job => {
+          const eligible = canInterview(job);
+          const trained = job.education && state.education.includes(job.education.id);
+          let requirement = job.education
+            ? trained ? `✓ ${job.education.name} completed` : `Training required: ${job.education.name} (${money(job.education.cost)})`
+            : "No paid training needed";
+          let lockReason = "";
+          if (total > job.pay) lockReason = `Your monthly costs are ${money(total)}. This job pays ${money(job.pay)}.`;
+          else if (!eligible && job.education) lockReason = `You need ${money(job.education.cost)} available for tuition.`;
+          return `<article class="job-card ${eligible ? "" : "locked"}">
+            <div class="job-card-top"><div><span class="job-tier">${job.tier}</span><h2>${job.title}</h2></div><strong class="job-pay">${money(job.pay)}<small>/mo</small></strong></div>
+            <p>${job.description}</p><p class="job-requirement">${requirement}</p>
+            ${lockReason ? `<p class="job-lock">${lockReason}</p>` : ""}
+            <button class="${eligible ? "primary" : "secondary"}" data-job="${job.id}" ${eligible ? "" : "disabled"}>${eligible ? trained || !job.education ? "Start interview →" : `Enroll & interview · ${money(job.education.cost)} →` : "Not ready yet"}</button>
+          </article>`;
+        }).join("");
+        gameView.innerHTML = `
+          <div class="game-header"><div><p class="eyebrow">Level 2 · Find your first job</p><h1 id="gameTitle">Welcome to the world!</h1></div><button class="secondary" id="editPlan">Change my lifestyle</button></div>
+          <p class="career-intro">Your monthly costs are <strong>${money(total)}</strong>, and you have <strong>${money(state.cash)}</strong> after your home deposit. Pick a job that can cover your costs. Then talk with the interviewer and earn your job offer.</p>
+          ${currentJob ? `<p class="career-intro">You already earned a place as a <strong>${currentJob.title}</strong>. You can keep it or try another interview.</p>` : ""}
+          <div class="job-grid">${jobCards}</div>`;
+        gameView.querySelectorAll("[data-job]").forEach(button => button.addEventListener("click", () => startInterview(button.dataset.job)));
+        document.getElementById("editPlan").addEventListener("click", showPlanEditor);
+      }
+
+      function startInterview(jobId) {
+        const job = jobs.find(option => option.id === jobId);
+        if (!job || !canInterview(job)) return;
+        if (job.education && !state.education.includes(job.education.id)) {
+          state.cash -= job.education.cost;
+          state.education.push(job.education.id);
+        }
+        state.interview = { jobId, questionIndex: 0, misses: 0, feedback: "", answered: false };
+        renderInterview();
+      }
+
+      function renderInterview() {
+        const interview = state.interview;
+        const job = jobs.find(option => option.id === interview.jobId);
+        const question = job.questions[interview.questionIndex];
+        const isLast = interview.questionIndex === job.questions.length - 1;
+        gameView.innerHTML = `
+          <div class="game-header"><div><p class="eyebrow">Job interview · ${job.tier}</p><h1 id="gameTitle">Talk with ${job.title}</h1></div></div>
+          <div class="interview-panel">
+            <p class="mono">Interviewer</p>
+            <h2>${question ? "Let’s get to know you." : interview.misses === 0 ? "You got the job!" : "Not this time."}</h2>
+            ${question ? `<p class="interview-question">${question.prompt}</p>
+              <div class="answer-list">${question.answers.map((answer, index) => `<button class="answer-button" data-answer="${index}" ${interview.answered ? "disabled" : ""}>${answer}</button>`).join("")}</div>
+              <p class="interview-feedback ${interview.answered && interview.feedback.startsWith("Not quite") ? "miss" : ""}" aria-live="polite">${interview.feedback}</p>
+              ${interview.answered ? `<button class="primary" id="nextQuestion">${isLast ? "Finish the interview →" : "Next question →"}</button>` : ""}
+            ` : `<p>${interview.misses === 0
+              ? "You listened carefully and showed great problem-solving. Your monthly paycheck will be " + money(job.pay) + "."
+              : "You need every interview answer right to earn this job. Practice the skills, then try again."}</p>
+              <div class="interview-actions">
+                ${interview.misses === 0 ? `<button class="primary" id="acceptJob">Accept the job & start the year →</button>` : `<button class="primary" id="retryInterview">Try the interview again</button>`}
+                <button class="secondary" id="backToJobs">Back to job board</button>
+              </div>`}
+          </div>
+          <p class="career-intro">Money after tuition: <strong>${money(state.cash)}</strong></p>`;
+        gameView.querySelectorAll("[data-answer]").forEach(button => button.addEventListener("click", () => {
+          const answer = Number(button.dataset.answer);
+          if (answer !== question.correct) interview.misses += 1;
+          interview.feedback = answer === question.correct
+            ? "Great answer! You explained a thoughtful choice."
+            : "Not quite. A good teammate asks questions, checks facts, and solves problems honestly.";
+          interview.answered = true;
+          renderInterview();
+        }));
+        document.getElementById("nextQuestion")?.addEventListener("click", () => {
+          interview.questionIndex += 1;
+          interview.answered = false;
+          interview.feedback = "";
+          renderInterview();
+        });
+        document.getElementById("acceptJob")?.addEventListener("click", () => {
+          state.jobId = job.id;
+          state.plan.income = job.pay;
+          state.interview = null;
+          state.stage = "game";
+          renderGame();
+        });
+        document.getElementById("retryInterview")?.addEventListener("click", () => {
+          state.interview = { jobId: job.id, questionIndex: 0, misses: 0, feedback: "", answered: false };
+          renderInterview();
+        });
+        document.getElementById("backToJobs")?.addEventListener("click", renderJobs);
+      }
+
+      function showPlanEditor() {
+        setupView.hidden = false;
+        gameView.hidden = true;
+        document.getElementById("setupTitle").textContent = "Change your lifestyle.";
+        document.querySelector("#setupView .step-pill").textContent = `LEVEL 1 / MONTH ${state.month + 1}`;
+        startingCashField.disabled = state.month > 0;
+        startingCashNote.textContent = state.month > 0
+          ? "Starting money is locked after your first month."
+          : "You will pay a home deposit. College costs extra.";
+        updatePreview();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
       function renderGame() {
         const isFinished = state.month >= 12;
         const currentEvent = state.events[state.month];
+        const job = jobForState();
         const costs = monthlyCosts(state.plan);
         const fixedOutgoings = totalCosts(state.plan);
         const amountAfterMonth = state.cash + state.plan.income - fixedOutgoings + (currentEvent?.amount || 0);
@@ -391,33 +611,28 @@
         if (isFinished) {
           const survived = state.cash >= 0;
           gameView.innerHTML = `
-            <div class="game-header"><div><p class="eyebrow">Year complete · 12 months</p><h1 id="gameTitle">${survived ? "You made it through." : "A tough year, honestly."}</h1></div><button class="secondary" id="editPlan">Edit your plan</button></div>
+            <div class="game-header"><div><p class="eyebrow">Year complete · 12 months</p><h1 id="gameTitle">${survived ? "You made it through!" : "A tough year, honestly."}</h1></div><button class="secondary" id="editPlan">Edit your plan</button></div>
             <div class="result-panel"><h2>${survived ? "Your plan held." : "Your plan ran short."}</h2><p>${survived ? "You kept your balance above zero. Take a look at what your choices added up to." : "Some months cost more than your plan could absorb. Try a different mix of commitments and see what changes."}</p><div class="result-numbers"><div class="result-number"><span>Cash on hand</span><strong>${money(state.cash)}</strong></div><div class="result-number"><span>Saved this year</span><strong>${money(state.saved)}</strong></div></div><button class="primary" id="newGame">Make a new plan</button></div>
             <section class="plain-section"><h2>Your year</h2><div class="month-list">${history}</div></section>`;
         } else {
           gameView.innerHTML = `
-            <div class="game-header"><div><p class="eyebrow">Your next twelve months · Month ${state.month + 1} of 12</p><h1 id="gameTitle">${monthName} is here.</h1></div><div class="game-actions"><button class="secondary" id="editPlan">Edit plan</button></div></div>
+            <div class="game-header"><div><p class="eyebrow">Level 3 · Month ${state.month + 1} of 12 · ${job.title}</p><h1 id="gameTitle">${monthName} is here.</h1></div><div class="game-actions"><button class="secondary" id="editPlan">Edit plan</button></div></div>
             <div class="game-top-grid">
               <article class="event-panel"><p class="eyebrow">This month's surprise</p><h2>${currentEvent.title}</h2><p>${currentEvent.text}</p><span class="event-value ${currentEvent.amount < 0 ? "negative" : "positive"}">${currentEvent.amount > 0 ? "+" : ""}${money(currentEvent.amount)}</span></article>
               <div class="stats">
                 <div class="stat"><div class="stat-label">Cash right now</div><div class="stat-value">${money(state.cash)}</div><div class="stat-sub">After your move-in deposit</div></div>
-                <div class="stat"><div class="stat-label">Monthly income</div><div class="stat-value">${money(state.plan.income)}</div><div class="stat-sub">Take-home pay</div></div>
+                <div class="stat"><div class="stat-label">Monthly paycheck</div><div class="stat-value">${money(state.plan.income)}</div><div class="stat-sub">${job.title}</div></div>
                 <div class="stat"><div class="stat-label">Monthly commitments</div><div class="stat-value">${money(fixedOutgoings)}</div><div class="stat-sub">Including your savings goal</div></div>
                 <div class="stat"><div class="stat-label">After this month</div><div class="stat-value" style="color:${amountAfterMonth < 0 ? "var(--coral)" : "var(--green)"}">${money(amountAfterMonth)}</div><div class="stat-sub">If you close out the month</div></div>
               </div>
             </div>
             <div class="game-bottom-grid">
               <section class="plain-section"><h2>Where your paycheck goes</h2><div>${Object.entries(costs).map(([label, amount]) => `<div class="cashflow-row"><span class="cashflow-label">${label}</span><div class="bar-track"><div class="bar expense" style="width:${Math.min(100, Math.max(1, amount / Math.max(state.plan.income, 1) * 100))}%"></div></div><span class="cashflow-value">${money(-amount)}</span></div>`).join("")}<div class="cashflow-row"><span class="cashflow-label">Left before surprises</span><div class="bar-track"><div class="bar" style="width:${Math.min(100, Math.max(1, (state.plan.income - fixedOutgoings) / Math.max(state.plan.income, 1) * 100))}%"></div></div><span class="cashflow-value">${money(state.plan.income - fixedOutgoings)}</span></div></div></section>
-              <section class="plain-section"><h2>The year ahead</h2><div class="month-list">${history}</div><div class="advance-row"><p>Close out the month. Income, commitments, savings, and the surprise are applied.</p><button class="primary" id="advanceMonth">Close ${monthName} →</button></div></section>
+              <section class="plain-section"><h2>The year ahead</h2><div class="month-list">${history}</div><div class="advance-row"><p>Get paid, pay your bills, save, and handle this month's surprise.</p><button class="primary" id="advanceMonth">Finish ${monthName} →</button></div></section>
             </div>`;
         }
         document.getElementById("editPlan")?.addEventListener("click", () => {
-          setupView.hidden = false;
-          gameView.hidden = true;
-          document.getElementById("setupTitle").textContent = "Change your commitments.";
-          document.querySelector("#setupView .step-pill").textContent = `MONTH ${state.month + 1} / EDIT YOUR PLAN`;
-          updatePreview();
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          showPlanEditor();
         });
         document.getElementById("advanceMonth")?.addEventListener("click", () => {
           const surprise = currentEvent.amount;
@@ -433,8 +648,10 @@
           state = null;
           setupView.hidden = false;
           gameView.hidden = true;
-          document.getElementById("setupTitle").textContent = "Build a life you can afford.";
-          document.querySelector("#setupView .step-pill").textContent = "01 / MAKE YOUR PLAN";
+          document.getElementById("setupTitle").textContent = "Pick your starting lifestyle.";
+          document.querySelector("#setupView .step-pill").textContent = "LEVEL 1 / BUILD YOUR PLAN";
+          startingCashField.disabled = false;
+          startingCashNote.textContent = "You will pay a home deposit. College costs extra.";
           updatePreview();
           window.scrollTo({ top: 0, behavior: "smooth" });
         });
@@ -447,7 +664,21 @@
         if (!form.reportValidity()) return;
         const plan = readPlan();
         if (state) {
+          if (state.month === 0) state.cash += plan.startingCash - state.plan.startingCash;
+          state.cash += housing[state.plan.home].deposit - housing[plan.home].deposit;
           state.plan = plan;
+          const currentJob = jobForState();
+          if (currentJob && totalCosts(plan) <= currentJob.pay) {
+            state.plan.income = currentJob.pay;
+            setupView.hidden = true;
+            gameView.hidden = false;
+            renderGame();
+          } else {
+            state.jobId = null;
+            setupView.hidden = true;
+            gameView.hidden = false;
+            renderJobs();
+          }
         } else {
           state = {
             plan,
@@ -455,12 +686,15 @@
             saved: 0,
             month: 0,
             events: shuffle(events),
-            history: []
+            history: [],
+            education: [],
+            jobId: null,
+            interview: null
           };
+          setupView.hidden = true;
+          gameView.hidden = false;
+          renderJobs();
         }
-        setupView.hidden = true;
-        gameView.hidden = false;
-        renderGame();
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
       updatePreview();
