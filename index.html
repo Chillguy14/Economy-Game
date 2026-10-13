@@ -164,16 +164,6 @@
     .result-panel .primary { margin-top: 0; }
     .empty-note { color: var(--muted); font-size: 12px; }
     .career-intro { max-width: 720px; margin-bottom: 22px; color: var(--muted); }
-    .job-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .job-card { padding: 19px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
-    .job-card.locked { background: #ffffff80; }
-    .job-card-top { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
-    .job-card h2 { margin: 5px 0; font-size: 18px; }
-    .job-tier { color: var(--green); font: 10px var(--mono); text-transform: uppercase; }
-    .job-pay { white-space: nowrap; font: 500 17px var(--mono); }
-    .job-card p { margin: 8px 0; color: var(--muted); font-size: 12px; }
-    .job-card .job-requirement { color: var(--blue-ink); }
-    .job-card .secondary, .job-card .primary { width: 100%; margin-top: 8px; }
     button:disabled { cursor: not-allowed; opacity: .5; }
     .job-lock { color: var(--coral); font-size: 11px; }
     .interview-panel { max-width: 760px; padding: 25px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
@@ -185,11 +175,75 @@
     .interview-feedback { min-height: 28px; margin: 12px 0 0; color: var(--green); font-weight: 700; }
     .interview-feedback.miss { color: var(--coral); }
     .interview-actions { display: flex; gap: 9px; margin-top: 16px; }
+    .world-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(265px, .7fr); gap: 20px; align-items: start; }
+    .world-main, .world-sidebar { min-width: 0; }
+    .world-intro { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+    .map-scroll { overflow: auto; padding: 10px; border: 1px solid #a9c8b5; border-radius: var(--radius); background: #d8eddd; }
+    .town-board {
+      position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: repeat(10, 49px); gap: 2px; min-width: 660px; padding: 3px;
+      border: 3px solid #477f61; border-radius: 8px; background: #92c99e;
+    }
+    .map-tile { border-radius: 4px; background: #9bd0a1; }
+    .map-tile.path { background: #e8d49e; }
+    .map-building {
+      z-index: 1; display: grid; place-content: center; padding: 3px; border: 2px solid #fff8;
+      border-radius: 7px; color: white; text-align: center; text-shadow: 0 1px 2px #0008;
+      font-size: 11px; font-weight: 700; line-height: 1.1;
+    }
+    .map-building span { display: block; margin-bottom: 3px; font-size: 22px; }
+    .map-building.delivery { background: #c55445; }
+    .map-building.shop { background: #39815b; }
+    .map-building.mechanic { background: #577995; }
+    .map-building.developer { background: #665b9b; }
+    .map-building.nasa { background: #273958; }
+    .map-door { z-index: 1; display: grid; place-items: center; border: 2px dashed #755b2f; border-radius: 4px; background: #fff1c5; font-size: 18px; }
+    .map-player {
+      z-index: 3; display: grid; place-items: center; align-self: center; justify-self: center;
+      width: 38px; height: 38px; border: 3px solid white; border-radius: 50%; background: #18624b;
+      box-shadow: 0 2px 7px #183c2b88; font-size: 23px; line-height: 1;
+      transition: grid-column .12s ease, grid-row .12s ease;
+    }
+    .map-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 9px 0 0; color: var(--muted); font-size: 11px; }
+    .map-help { margin: 7px 0 0; color: var(--muted); font-size: 11px; }
+    .direction-pad { display: grid; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(2, 44px); justify-content: center; gap: 4px; margin: 14px auto 0; }
+    .direction-pad button { border: 1px solid var(--line); border-radius: 6px; background: white; color: var(--ink); font-size: 19px; }
+    .direction-pad [data-move="up"] { grid-column: 2; grid-row: 1; }
+    .direction-pad [data-move="left"] { grid-column: 1; grid-row: 2; }
+    .direction-pad [data-move="down"] { grid-column: 2; grid-row: 2; }
+    .direction-pad [data-move="right"] { grid-column: 3; grid-row: 2; }
+    .map-panel { margin-top: 14px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .map-panel h2 { margin: 0 0 7px; font: 500 22px var(--serif); }
+    .map-panel p { margin: 7px 0; color: var(--muted); font-size: 12px; }
+    .map-panel .primary, .map-panel .secondary { width: 100%; margin-top: 9px; }
+    .map-panel .answer-list { margin-top: 13px; }
+    .map-panel .interview-question { margin: 14px 0 10px; font-size: 15px; }
+    .world-stat { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+    .world-stat span { color: var(--muted); }
+    .world-stat strong { font-family: var(--mono); }
+    .world-event { margin-top: 14px; padding: 15px; border-radius: 7px; background: var(--green); color: white; }
+    .world-event h2 { margin: 4px 0; font: 500 19px var(--serif); }
+    .world-event p { margin: 4px 0; color: #d5e8dd; font-size: 11px; }
+    .world-event .mono { color: #c2dfcf; font-size: 9px; }
+    .world-sidebar .month-list { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 14px; }
+    .world-sidebar .month-cell { min-height: 54px; padding: 6px; }
+    .world-sidebar .month-cell strong { font-size: 9px; }
+    .world-sidebar .primary { margin-top: 14px; }
     @media (max-width: 540px) {
-      .job-grid { grid-template-columns: 1fr; }
-      .job-card-top { display: block; }
-      .job-pay { display: block; margin-top: 8px; }
       .interview-actions { flex-direction: column; }
+    }
+    @media (max-width: 850px) {
+      .world-layout { grid-template-columns: 1fr; }
+      .world-sidebar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .world-sidebar .world-event { margin-top: 0; }
+      .world-sidebar .month-list { grid-column: 1 / -1; margin-top: 0; }
+    }
+    @media (max-width: 540px) {
+      .town-board { grid-template-rows: repeat(10, 42px); min-width: 610px; }
+      .map-building { font-size: 10px; }
+      .world-sidebar { display: block; }
+      .world-sidebar .world-event { margin-top: 12px; }
+      .world-sidebar .month-list { margin-top: 14px; }
     }
     footer { padding: 18px 0 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
     @media (max-width: 850px) {
@@ -338,6 +392,7 @@
       const jobs = [
         {
           id: "delivery", tier: "Level 1 · Starter job", title: "Pizza delivery driver", pay: 2400,
+          location: "Pizza Place", icon: "🍕", mapX: 0, mapY: 0,
           description: "Bring pizzas to customers. Plan your route and be on time.",
           questions: [{
             prompt: "A customer gives you the wrong address. What do you do?",
@@ -347,6 +402,7 @@
         },
         {
           id: "shop", tier: "Level 2 · Team player", title: "Grocery store worker", pay: 3300,
+          location: "Fresh Market", icon: "🥕", mapX: 4, mapY: 0,
           description: "Help customers, stock shelves, and work with a team.",
           questions: [{
             prompt: "A customer cannot find an item. What is a good first step?",
@@ -360,6 +416,7 @@
         },
         {
           id: "mechanic", tier: "Level 3 · Skilled work", title: "Bike mechanic", pay: 4600,
+          location: "Bike Shop", icon: "🚲", mapX: 9, mapY: 0,
           description: "Fix bikes, solve problems, and help people ride safely.",
           education: { id: "trade", name: "Bike repair course", cost: 1200 },
           questions: [{
@@ -374,6 +431,7 @@
         },
         {
           id: "developer", tier: "Level 4 · Tech expert", title: "Software developer", pay: 6800,
+          location: "Code Lab", icon: "💻", mapX: 1, mapY: 6,
           description: "Build and test computer programs with a project team.",
           education: { id: "coding", name: "Coding college course", cost: 4000 },
           questions: [{
@@ -392,6 +450,7 @@
         },
         {
           id: "nasa", tier: "Level 5 · Dream job", title: "NASA mission engineer", pay: 10200,
+          location: "Space Center", icon: "🚀", mapX: 8, mapY: 6,
           description: "Help design and test machines that explore space. This is the toughest interview!",
           education: { id: "university", name: "University engineering degree", cost: 10000 },
           questions: [{
@@ -413,6 +472,29 @@
           }]
         }
       ];
+      const workTasks = {
+        delivery: [
+          { prompt: "The address says 14 Maple Street. Which house do you deliver to?", answers: ["41 Maple Street", "14 Maple Street", "14 Maple Avenue"], correct: 1 },
+          { prompt: "The road is busy. How do you get the pizza there?", answers: ["Ride safely and follow the traffic rules.", "Rush through a red light.", "Leave the pizza in the road."], correct: 0 }
+        ],
+        shop: [
+          { prompt: "A customer needs milk kept cold. Where does it go?", answers: ["On the warm bread shelf.", "In the refrigerator.", "Beside the front door in the sun."], correct: 1 },
+          { prompt: "You find a dented can on the shelf. What should you do?", answers: ["Hide it behind the other cans.", "Put it in your lunch bag.", "Set it aside and tell your supervisor."], correct: 2 }
+        ],
+        mechanic: [
+          { prompt: "A customer's tire is flat. What should you check first?", answers: ["The tire and inner tube for a leak.", "The bike bell.", "The paint color."], correct: 0 },
+          { prompt: "The brakes still feel loose after your repair. What now?", answers: ["Give the bike back anyway.", "Check and adjust them again before the bike is ridden.", "Tell the customer not to use the brakes."], correct: 1 }
+        ],
+        developer: [
+          { prompt: "A button should add 1, but it adds 2. What is a good first step?", answers: ["Delete the whole program.", "Check the button's code and test it.", "Tell users not to click it."], correct: 1 },
+          { prompt: "You fixed the bug. How do you check your change?", answers: ["Test the button more than once.", "Assume it works without trying.", "Remove the button."], correct: 0 }
+        ],
+        nasa: [
+          { prompt: "A rocket sensor warning appears during a test. What do you do?", answers: ["Ignore it to save time.", "Stop and investigate the warning with your team.", "Cover the warning light."], correct: 1 },
+          { prompt: "Two measurements disagree. What should the team do?", answers: ["Check the equipment and repeat the measurements.", "Pick whichever number looks nicer.", "Erase both measurements."], correct: 0 },
+          { prompt: "Before a launch, what matters most?", answers: ["Finishing first.", "Making the rocket look cool.", "Checking the safety steps carefully as a team."], correct: 2 }
+        ]
+      };
       const events = [
         { title: "A dental surprise", text: "A filling and a checkup weren't in the plan.", amount: -260 },
         { title: "Extra shifts came through", text: "A busy month at work adds a little to your pay.", amount: 240 },
@@ -491,33 +573,157 @@
         return true;
       }
 
-      function renderJobs() {
-        const currentJob = jobForState();
-        const total = totalCosts(state.plan);
-        const jobCards = jobs.map(job => {
-          const eligible = canInterview(job);
-          const trained = job.education && state.education.includes(job.education.id);
-          let requirement = job.education
-            ? trained ? `✓ ${job.education.name} completed` : `Training required: ${job.education.name} (${money(job.education.cost)})`
-            : "No paid training needed";
-          let lockReason = "";
-          if (total > job.pay) lockReason = `Your monthly costs are ${money(total)}. This job pays ${money(job.pay)}.`;
-          else if (!eligible && job.education) lockReason = `You need ${money(job.education.cost)} available for tuition.`;
-          return `<article class="job-card ${eligible ? "" : "locked"}">
-            <div class="job-card-top"><div><span class="job-tier">${job.tier}</span><h2>${job.title}</h2></div><strong class="job-pay">${money(job.pay)}<small>/mo</small></strong></div>
-            <p>${job.description}</p><p class="job-requirement">${requirement}</p>
-            ${lockReason ? `<p class="job-lock">${lockReason}</p>` : ""}
-            <button class="${eligible ? "primary" : "secondary"}" data-job="${job.id}" ${eligible ? "" : "disabled"}>${eligible ? trained || !job.education ? "Start interview →" : `Enroll & interview · ${money(job.education.cost)} →` : "Not ready yet"}</button>
-          </article>`;
-        }).join("");
-        gameView.innerHTML = `
-          <div class="game-header"><div><p class="eyebrow">Level 2 · Find your first job</p><h1 id="gameTitle">Welcome to the world!</h1></div><button class="secondary" id="editPlan">Change my lifestyle</button></div>
-          <p class="career-intro">Your monthly costs are <strong>${money(total)}</strong>, and you have <strong>${money(state.cash)}</strong> after your home deposit. Pick a job that can cover your costs. Then talk with the interviewer and earn your job offer.</p>
-          ${currentJob ? `<p class="career-intro">You already earned a place as a <strong>${currentJob.title}</strong>. You can keep it or try another interview.</p>` : ""}
-          <div class="job-grid">${jobCards}</div>`;
-        gameView.querySelectorAll("[data-job]").forEach(button => button.addEventListener("click", () => startInterview(button.dataset.job)));
-        document.getElementById("editPlan").addEventListener("click", showPlanEditor);
+      function doorForJob(job) {
+        return { x: job.mapX + 1, y: job.mapY + 2 };
       }
+
+      function nearbyJob() {
+        return jobs.find(job => state.player.x === doorForJob(job).x && state.player.y === doorForJob(job).y);
+      }
+
+      function renderMapPanel(job) {
+        if (!job) {
+          const currentJob = jobForState();
+          return `<h2>Explore Townsville</h2>
+            <p>Walk around town and visit the places with job signs. Stand by a door to meet the people inside.</p>
+            ${currentJob
+              ? `<p>Your next shift is at <strong>${currentJob.location}</strong>. Find its door and do today's work.</p>`
+              : "<p>Choose a job that pays enough for your monthly costs. Some careers need paid school first!</p>"}`;
+        }
+        const eligible = canInterview(job);
+        const trained = job.education && state.education.includes(job.education.id);
+        const isCurrentJob = state.jobId === job.id;
+        if (isCurrentJob) {
+          if (state.workComplete) {
+            return `<h2>Shift complete!</h2><p>Great work at ${job.location}. You earned this month's paycheck.</p>
+              <button class="primary" id="finishMonth">Finish the month →</button>`;
+          }
+          return `<h2>You're at ${job.location}!</h2><p>Time to do your shift as a ${job.title}. Complete the work challenge to earn your paycheck.</p>
+            <button class="primary" id="startShift">Start today's shift →</button>`;
+        }
+        const payLock = totalCosts(state.plan) > job.pay;
+        const tuitionLock = job.education && !trained && state.cash < job.education.cost;
+        return `<h2>${job.location}</h2><p>${job.description}</p>
+          <p><strong>${money(job.pay)} / month</strong></p>
+          ${job.education ? `<p>${trained ? "✓ Training completed" : `Training: ${job.education.name} (${money(job.education.cost)})`}</p>` : ""}
+          ${payLock ? `<p class="job-lock">Locked: your monthly costs (${money(totalCosts(state.plan))}) are higher than this paycheck.</p>` : ""}
+          ${tuitionLock ? `<p class="job-lock">Locked: you need ${money(job.education.cost)} for school.</p>` : ""}
+          <button class="primary" id="meetEmployer" ${eligible ? "" : "disabled"}>${eligible ? trained || !job.education ? "Meet the employer →" : `Enroll & interview · ${money(job.education.cost)} →` : "Not ready yet"}</button>`;
+      }
+
+      function mapMarkup() {
+        const tiles = Array.from({ length: 120 }, (_, index) => {
+          const x = index % 12;
+          const y = Math.floor(index / 12);
+          const onPath = y === 4 || x === 5 ||
+            (x === 1 && y >= 2 && y <= 4) ||
+            (x === 10 && y >= 2 && y <= 4) ||
+            (x === 2 && y >= 4 && y <= 8) ||
+            (x === 9 && y >= 4 && y <= 8);
+          return `<div class="map-tile ${onPath ? "path" : ""}" style="grid-column:${x + 1};grid-row:${y + 1}" aria-hidden="true"></div>`;
+        }).join("");
+        const buildings = jobs.map(job => {
+          const door = doorForJob(job);
+          const hired = state.jobId === job.id;
+          return `<div class="map-building ${job.id}" style="grid-column:${job.mapX + 1}/span 2;grid-row:${job.mapY + 1}/span 2" aria-label="${job.location}${hired ? ", your workplace" : ""}">
+              <span aria-hidden="true">${job.icon}</span>${job.location}${hired ? " ★" : ""}
+            </div>
+            <div class="map-door" style="grid-column:${door.x + 1};grid-row:${door.y + 1}" aria-label="Door to ${job.location}">🚪</div>`;
+        }).join("");
+        return `<div class="map-scroll" id="mapScroll"><div class="town-board" role="img" aria-label="Map of Townsville with five workplaces">
+          ${tiles}${buildings}
+          <div class="map-player" style="grid-column:${state.player.x + 1};grid-row:${state.player.y + 1}" aria-label="You are here">🧑</div>
+        </div></div>
+        <div class="map-legend"><span>🧑 You</span><span>🚪 Workplace door</span><span>★ Your job</span></div>
+        <p class="map-help">Walk with WASD or arrow keys. On a phone or tablet, use the direction buttons.</p>
+        <div class="direction-pad" aria-label="Walk controls">
+          <button type="button" data-move="up" aria-label="Walk up">↑</button>
+          <button type="button" data-move="left" aria-label="Walk left">←</button>
+          <button type="button" data-move="down" aria-label="Walk down">↓</button>
+          <button type="button" data-move="right" aria-label="Walk right">→</button>
+        </div>`;
+      }
+
+      function renderWorld() {
+        state.screen = "world";
+        const isFinished = state.month >= 12;
+        if (isFinished) {
+          renderGame();
+          return;
+        }
+        const job = jobForState();
+        const event = state.events[state.month];
+        const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date(2026, state.month, 1));
+        const history = Array.from({ length: 12 }, (_, index) => {
+          const record = state.history[index];
+          return `<div class="month-cell ${record ? `done ${record.net < 0 ? "negative-month" : ""}` : index === state.month ? "active" : ""}"><span>${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(2026, index, 1))}</span><strong>${record ? money(record.cash) : index === state.month ? "NOW" : "···"}</strong></div>`;
+        }).join("");
+        const costs = totalCosts(state.plan);
+        gameView.innerHTML = `
+          <div class="game-header">
+            <div><p class="eyebrow">Townsville · Month ${state.month + 1} of 12 · ${job ? job.title : "Find a job"}</p><h1 id="gameTitle">${state.month === 0 && !job ? "Welcome to your new world!" : `${monthName} in Townsville`}</h1></div>
+            <div class="game-actions"><button class="secondary" id="editPlan">Change my plan</button></div>
+          </div>
+          <div class="world-layout">
+            <section class="world-main" aria-label="Town map">
+              <p class="world-intro">${job ? `Walk to ${job.location} to do your shift. Your paycheck is ${money(job.pay)} a month.` : "Walk around town to find a job. Get close to a workplace door to meet its employer."}</p>
+              ${mapMarkup()}
+              <div class="map-panel" id="mapPanel" aria-live="polite">${renderMapPanel(nearbyJob())}</div>
+            </section>
+            <aside class="world-sidebar" aria-label="Game status">
+              <div>
+                <div class="world-stat"><span>Money in your pocket</span><strong>${money(state.cash)}</strong></div>
+                <div class="world-stat"><span>Monthly costs</span><strong>${money(costs)}</strong></div>
+                <div class="world-stat"><span>Your paycheck</span><strong>${job ? money(job.pay) : "No job yet"}</strong></div>
+                <div class="world-event"><span class="mono">MONTH ${state.month + 1} SURPRISE</span><h2>${event.title}</h2><p>${event.text}</p><strong>${event.amount > 0 ? "+" : ""}${money(event.amount)}</strong></div>
+              </div>
+              <div>
+                <h2 class="eyebrow">Your year</h2><div class="month-list">${history}</div>
+              </div>
+            </aside>
+          </div>`;
+        const mapScroll = gameView.querySelector?.("#mapScroll");
+        if (mapScroll && mapScroll.scrollWidth > mapScroll.clientWidth) {
+          const playerCenter = (state.player.x + 0.5) * mapScroll.scrollWidth / 12;
+          mapScroll.scrollLeft = Math.max(0, Math.min(
+            mapScroll.scrollWidth - mapScroll.clientWidth,
+            playerCenter - mapScroll.clientWidth / 2
+          ));
+        }
+        gameView.querySelectorAll("[data-move]").forEach(button => button.addEventListener("click", () => movePlayer(button.dataset.move)));
+        document.getElementById("editPlan").addEventListener("click", showPlanEditor);
+        document.getElementById("meetEmployer")?.addEventListener("click", () => startInterview(nearbyJob()?.id));
+        document.getElementById("startShift")?.addEventListener("click", startShift);
+        document.getElementById("finishMonth")?.addEventListener("click", finishMonth);
+      }
+
+      function movePlayer(direction) {
+        const moves = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+        const [dx, dy] = moves[direction] || [0, 0];
+        const x = state.player.x + dx;
+        const y = state.player.y + dy;
+        const insideBuilding = jobs.some(job =>
+          x >= job.mapX && x < job.mapX + 2 && y >= job.mapY && y < job.mapY + 2
+        );
+        if (x < 0 || x >= 12 || y < 0 || y >= 10 || insideBuilding) return;
+        state.player = { x, y };
+        renderWorld();
+      }
+
+      window.addEventListener("keydown", event => {
+        if (state?.screen !== "world" || setupView.hidden === false) return;
+        const directions = {
+          ArrowUp: "up", w: "up", W: "up",
+          ArrowDown: "down", s: "down", S: "down",
+          ArrowLeft: "left", a: "left", A: "left",
+          ArrowRight: "right", d: "right", D: "right"
+        };
+        const direction = directions[event.key];
+        if (direction) {
+          event.preventDefault();
+          movePlayer(direction);
+        }
+      });
 
       function startInterview(jobId) {
         const job = jobs.find(option => option.id === jobId);
@@ -526,11 +732,13 @@
           state.cash -= job.education.cost;
           state.education.push(job.education.id);
         }
+        state.screen = "interview";
         state.interview = { jobId, questionIndex: 0, misses: 0, feedback: "", answered: false };
         renderInterview();
       }
 
       function renderInterview() {
+        state.screen = "interview";
         const interview = state.interview;
         const job = jobs.find(option => option.id === interview.jobId);
         const question = job.questions[interview.questionIndex];
@@ -549,7 +757,7 @@
               : "You need every interview answer right to earn this job. Practice the skills, then try again."}</p>
               <div class="interview-actions">
                 ${interview.misses === 0 ? `<button class="primary" id="acceptJob">Accept the job & start the year →</button>` : `<button class="primary" id="retryInterview">Try the interview again</button>`}
-                <button class="secondary" id="backToJobs">Back to job board</button>
+                <button class="secondary" id="backToTown">Back to town</button>
               </div>`}
           </div>
           <p class="career-intro">Money after tuition: <strong>${money(state.cash)}</strong></p>`;
@@ -572,14 +780,79 @@
           state.jobId = job.id;
           state.plan.income = job.pay;
           state.interview = null;
-          state.stage = "game";
-          renderGame();
+          state.workComplete = false;
+          renderWorld();
         });
         document.getElementById("retryInterview")?.addEventListener("click", () => {
           state.interview = { jobId: job.id, questionIndex: 0, misses: 0, feedback: "", answered: false };
           renderInterview();
         });
-        document.getElementById("backToJobs")?.addEventListener("click", renderJobs);
+        document.getElementById("backToTown")?.addEventListener("click", renderWorld);
+      }
+
+      function startShift() {
+        state.screen = "task";
+        state.task = { questionIndex: 0, misses: 0, feedback: "", answered: false };
+        renderWorkTask();
+      }
+
+      function renderWorkTask() {
+        const job = jobForState();
+        const task = state.task;
+        const questions = workTasks[job.id];
+        const question = questions[task.questionIndex];
+        const finished = task.questionIndex >= questions.length;
+        const passed = finished && task.misses === 0;
+        gameView.innerHTML = `
+          <div class="game-header"><div><p class="eyebrow">Work shift · Month ${state.month + 1} · ${job.location}</p><h1 id="gameTitle">${job.title}</h1></div></div>
+          <section class="interview-panel map-panel" aria-live="polite">
+            <p class="mono">${finished ? "Shift results" : `Work task ${task.questionIndex + 1} of ${questions.length}`}</p>
+            <h2>${finished ? passed ? "Excellent work!" : "Let's practice and try again." : "Time to do the job!"}</h2>
+            ${question ? `<p class="interview-question">${question.prompt}</p>
+              <div class="answer-list">${question.answers.map((answer, index) => `<button class="answer-button" data-work-answer="${index}" ${task.answered ? "disabled" : ""}>${answer}</button>`).join("")}</div>
+              <p class="interview-feedback ${task.answered && task.feedback.startsWith("Not quite") ? "miss" : ""}" aria-live="polite">${task.feedback}</p>
+              ${task.answered ? `<button class="primary" id="nextWorkTask">${task.questionIndex === questions.length - 1 ? "Finish today's work →" : "Next task →"}</button>` : ""}
+            ` : `<p>${passed
+              ? "You completed your tasks carefully. Your paycheck is ready when you finish the month."
+              : "A mistake happened during the shift. Review the task and try the whole shift again to earn your paycheck."}</p>
+              <button class="primary" id="${passed ? "completeShift" : "retryShift"}">${passed ? "Complete shift →" : "Try the shift again"}</button>
+              <button class="secondary" id="leaveShift">Back to the map</button>`}
+          </section>`;
+        gameView.querySelectorAll("[data-work-answer]").forEach(button => button.addEventListener("click", () => {
+          const answer = Number(button.dataset.workAnswer);
+          if (answer !== question.correct) task.misses += 1;
+          task.feedback = answer === question.correct
+            ? "Nice work! That was the right move."
+            : "Not quite. Think about safety, checking your work, and helping people.";
+          task.answered = true;
+          renderWorkTask();
+        }));
+        document.getElementById("nextWorkTask")?.addEventListener("click", () => {
+          task.questionIndex += 1;
+          task.answered = false;
+          task.feedback = "";
+          renderWorkTask();
+        });
+        document.getElementById("completeShift")?.addEventListener("click", () => {
+          state.workComplete = true;
+          renderWorld();
+        });
+        document.getElementById("retryShift")?.addEventListener("click", startShift);
+        document.getElementById("leaveShift")?.addEventListener("click", renderWorld);
+      }
+
+      function finishMonth() {
+        if (!state.workComplete) return;
+        const event = state.events[state.month];
+        const net = state.plan.income - totalCosts(state.plan) + event.amount;
+        state.cash += net;
+        state.saved += state.plan.saving;
+        state.month += 1;
+        state.history.push({ cash: state.cash, net });
+        state.workComplete = false;
+        if (state.month >= 12) renderGame();
+        else renderWorld();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       function showPlanEditor() {
@@ -596,54 +869,21 @@
       }
 
       function renderGame() {
-        const isFinished = state.month >= 12;
-        const currentEvent = state.events[state.month];
-        const job = jobForState();
-        const costs = monthlyCosts(state.plan);
-        const fixedOutgoings = totalCosts(state.plan);
-        const amountAfterMonth = state.cash + state.plan.income - fixedOutgoings + (currentEvent?.amount || 0);
-        const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date(2026, state.month, 1));
+        if (state.month < 12) {
+          renderWorld();
+          return;
+        }
         const history = Array.from({ length: 12 }, (_, index) => {
           const record = state.history[index];
-          return `<div class="month-cell ${record ? `done ${record.net < 0 ? "negative-month" : ""}` : index === state.month && !isFinished ? "active" : ""}"><span>${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(2026, index, 1))}</span><strong>${record ? money(record.cash) : index === state.month && !isFinished ? "NOW" : "···"}</strong></div>`;
+          return `<div class="month-cell ${record ? `done ${record.net < 0 ? "negative-month" : ""}` : ""}"><span>${new Intl.DateTimeFormat("en-US", { month: "short" }).format(new Date(2026, index, 1))}</span><strong>${record ? money(record.cash) : "···"}</strong></div>`;
         }).join("");
 
-        if (isFinished) {
-          const survived = state.cash >= 0;
-          gameView.innerHTML = `
+        const survived = state.cash >= 0;
+        gameView.innerHTML = `
             <div class="game-header"><div><p class="eyebrow">Year complete · 12 months</p><h1 id="gameTitle">${survived ? "You made it through!" : "A tough year, honestly."}</h1></div><button class="secondary" id="editPlan">Edit your plan</button></div>
             <div class="result-panel"><h2>${survived ? "Your plan held." : "Your plan ran short."}</h2><p>${survived ? "You kept your balance above zero. Take a look at what your choices added up to." : "Some months cost more than your plan could absorb. Try a different mix of commitments and see what changes."}</p><div class="result-numbers"><div class="result-number"><span>Cash on hand</span><strong>${money(state.cash)}</strong></div><div class="result-number"><span>Saved this year</span><strong>${money(state.saved)}</strong></div></div><button class="primary" id="newGame">Make a new plan</button></div>
             <section class="plain-section"><h2>Your year</h2><div class="month-list">${history}</div></section>`;
-        } else {
-          gameView.innerHTML = `
-            <div class="game-header"><div><p class="eyebrow">Level 3 · Month ${state.month + 1} of 12 · ${job.title}</p><h1 id="gameTitle">${monthName} is here.</h1></div><div class="game-actions"><button class="secondary" id="editPlan">Edit plan</button></div></div>
-            <div class="game-top-grid">
-              <article class="event-panel"><p class="eyebrow">This month's surprise</p><h2>${currentEvent.title}</h2><p>${currentEvent.text}</p><span class="event-value ${currentEvent.amount < 0 ? "negative" : "positive"}">${currentEvent.amount > 0 ? "+" : ""}${money(currentEvent.amount)}</span></article>
-              <div class="stats">
-                <div class="stat"><div class="stat-label">Cash right now</div><div class="stat-value">${money(state.cash)}</div><div class="stat-sub">After your move-in deposit</div></div>
-                <div class="stat"><div class="stat-label">Monthly paycheck</div><div class="stat-value">${money(state.plan.income)}</div><div class="stat-sub">${job.title}</div></div>
-                <div class="stat"><div class="stat-label">Monthly commitments</div><div class="stat-value">${money(fixedOutgoings)}</div><div class="stat-sub">Including your savings goal</div></div>
-                <div class="stat"><div class="stat-label">After this month</div><div class="stat-value" style="color:${amountAfterMonth < 0 ? "var(--coral)" : "var(--green)"}">${money(amountAfterMonth)}</div><div class="stat-sub">If you close out the month</div></div>
-              </div>
-            </div>
-            <div class="game-bottom-grid">
-              <section class="plain-section"><h2>Where your paycheck goes</h2><div>${Object.entries(costs).map(([label, amount]) => `<div class="cashflow-row"><span class="cashflow-label">${label}</span><div class="bar-track"><div class="bar expense" style="width:${Math.min(100, Math.max(1, amount / Math.max(state.plan.income, 1) * 100))}%"></div></div><span class="cashflow-value">${money(-amount)}</span></div>`).join("")}<div class="cashflow-row"><span class="cashflow-label">Left before surprises</span><div class="bar-track"><div class="bar" style="width:${Math.min(100, Math.max(1, (state.plan.income - fixedOutgoings) / Math.max(state.plan.income, 1) * 100))}%"></div></div><span class="cashflow-value">${money(state.plan.income - fixedOutgoings)}</span></div></div></section>
-              <section class="plain-section"><h2>The year ahead</h2><div class="month-list">${history}</div><div class="advance-row"><p>Get paid, pay your bills, save, and handle this month's surprise.</p><button class="primary" id="advanceMonth">Finish ${monthName} →</button></div></section>
-            </div>`;
-        }
-        document.getElementById("editPlan")?.addEventListener("click", () => {
-          showPlanEditor();
-        });
-        document.getElementById("advanceMonth")?.addEventListener("click", () => {
-          const surprise = currentEvent.amount;
-          const net = state.plan.income - fixedOutgoings + surprise;
-          state.cash += net;
-          state.saved += state.plan.saving;
-          state.month += 1;
-          state.history.push({ cash: state.cash, net });
-          renderGame();
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
+        document.getElementById("editPlan")?.addEventListener("click", showPlanEditor);
         document.getElementById("newGame")?.addEventListener("click", () => {
           state = null;
           setupView.hidden = false;
@@ -672,12 +912,12 @@
             state.plan.income = currentJob.pay;
             setupView.hidden = true;
             gameView.hidden = false;
-            renderGame();
+            renderWorld();
           } else {
             state.jobId = null;
             setupView.hidden = true;
             gameView.hidden = false;
-            renderJobs();
+            renderWorld();
           }
         } else {
           state = {
@@ -689,11 +929,15 @@
             history: [],
             education: [],
             jobId: null,
-            interview: null
+            interview: null,
+            player: { x: 5, y: 4 },
+            screen: "world",
+            workComplete: false,
+            task: null
           };
           setupView.hidden = true;
           gameView.hidden = false;
-          renderJobs();
+          renderWorld();
         }
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
